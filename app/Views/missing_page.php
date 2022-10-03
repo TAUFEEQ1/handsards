@@ -34,27 +34,14 @@
                     <div data-bind="datepicker: { value: cdate}"></div>
                 </div>
                 <div class="col-8 mt-3" id="hansard-wid">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5>Floor Speakers on <?php echo $publish_date; ?></h5>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="myChart" width="400" height="150"></canvas>
-                        </div>
-                    </div>
-                    <div class="card mt-2">
-                        <div class="card-header">
-                            <h5>Keywords</h5>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="my_canvas" width="800" height="230"></canvas>
-                        </div>
+                    <div class="jumbotron bg-light">
+                        <h2>Parliament Hansard Missing on <?php echo $publish_date;?></h2>
+                        <p>Possible hansard not been uploaded yet or parliament had not sitting on <?php echo $publish_date;?></p>
                     </div>
                 </div>
             </div>
         </div>
     </main>
-
 </body>
 <style>
     .hansard-nav {
@@ -79,8 +66,7 @@
 </style>
 <script src="<?php echo base_url(); ?>/js/lightup.js"></script>
 <script src="<?php echo base_url();?>/js/formatdate.js"></script>
-<script type="text/javascript">
-
+<script>
     function CalendarView() {
         this.cdate = ko.observable();
         this.cdate(new Date("<?php echo $publish_date; ?>"));
@@ -88,46 +74,8 @@
             window.location.assign("/hansards/" + formatDate(tdate));
         });
         lightUp("<?php echo $publish_date;?>");
-    }
-
-
+    };
     ko.applyBindings(new CalendarView(), document.getElementById('calendar-wid'));
-    const ctx = document.getElementById('myChart');
-    const myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: <?php echo json_encode($mps); ?>,
-            datasets: [{
-                label: '# of MENTIONS',
-                data: <?php echo json_encode($mentions) ?>,
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            indexAxis: 'y'
-        }
-    });
-    WordCloud(document.getElementById('my_canvas'), {
-        list: <?php echo json_encode($topics); ?>,
-        minSize: 5,
-        shrinkToFit: true,
-        shape: 'square',
-        weightFactor: 2
-    });
 </script>
 
 </html>
