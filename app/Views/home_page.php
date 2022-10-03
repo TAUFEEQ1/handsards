@@ -22,7 +22,7 @@
 <body>
     <header class="hansard-nav">
         <nav class="navbar navbar-expand-lg navbar-dark mx-auto" style="width:84%;">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/">
                 <h1 class="hd-title">UG Hansards Review</h1>
             </a>
         </nav>
