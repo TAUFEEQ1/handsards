@@ -14,6 +14,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout-jqueryui/2.2.4/knockout-jqueryui.min.js" integrity="sha512-DdwPl4MJIrgqUMbFFSer6slfPKahBVfYjKpQrWwH4sLyQfNA/3RnIvpWZs8+KRXC5QYXt+DtXDtSpZd6rZiBMA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wordcloud2.js/1.0.2/wordcloud2.min.js" integrity="sha512-f1TzI0EVjfhwKkLEFZnu8AgzzzuUBE9X4YY61EoQJhjH8m+25VKdWmEfTJjmtnm0TEP8q9h+J061kCHvx3NJDA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.6/underscore-min.js" integrity="sha512-2V49R8ndaagCOnwmj8QnbT1Gz/rie17UouD9Re5WxbzRVUGoftCu5IuqqtAM9+UC3fwfHCSJR1hkzNQh/2wdtg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <title>UG HANSARDS</title>
 </head>
 
@@ -31,7 +32,7 @@
                 <div class="mt-3 calendar" id="calendar-wid">
                     <!--Calendar-->
                     <h5 style="text-indent:0.5em;">Select a date</h5>
-                    <div data-bind="datepicker: { value: cdate}"></div>
+                    <div data-bind="datepicker: { value: cdate, onChangeMonthYear:onChangeMonthYear}"></div>
                 </div>
                 <div class="col-8 mt-3" id="hansard-wid">
                     <div class="card">
@@ -88,6 +89,17 @@
             window.location.assign("/hansards/" + formatDate(tdate));
         });
         lightUp("<?php echo $publish_date;?>");
+        let dbh = null;
+        this.onChangeMonthYear = (year,month)=>{
+            if(dbh){
+                dbh.cancel();
+            }
+            dbh = _.debounce(()=>{
+                let mth = ('0'+month).slice(-2);
+                lightUp(`${year}-${mth}-15`);
+            },800,false);
+            dbh();
+        }
     }
 
 
