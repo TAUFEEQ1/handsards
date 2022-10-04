@@ -35,13 +35,13 @@
                     <h5 style="text-indent:0.5em;">Select a date</h5>
                     <div data-bind="datepicker: { value: cdate, onChangeMonthYear:onChangeMonthYear}"></div>
                 </div>
-                <div class="col-8 mt-3" id="hansard-wid">
+                <div class="mt-3 col-sm-12 col-md-8" id="hansard-wid">
                     <div class="card">
                         <div class="card-header">
                             <h5>Floor Speakers on <?php echo $publish_date; ?></h5>
                         </div>
                         <div class="card-body">
-                            <canvas id="myChart" width="400" height="150"></canvas>
+                            <canvas id="myChart"></canvas>
                         </div>
                     </div>
                     <div class="card mt-2">
@@ -49,7 +49,7 @@
                             <h5>Keywords</h5>
                         </div>
                         <div class="card-body">
-                            <canvas id="my_canvas" width="800" height="230"></canvas>
+                            <canvas id="my_canvas"  height="230" width="800"></canvas>
                         </div>
                     </div>
                 </div>
@@ -75,30 +75,41 @@
         margin-right: auto;
     }
 
-    .calendar {
-        width: 24em;
+
+    @media only screen and (min-width:769px) {
+        .calendar{
+            width: 22em;
+        }
+        #myChart{
+            height: 300px;
+        }
+    }
+    @media only screen and (max-width:600px){
+        .calendar{
+            width:14em;
+        }
+
     }
 </style>
 <script src="<?php echo base_url(); ?>/js/lightup.js"></script>
-<script src="<?php echo base_url();?>/js/formatdate.js"></script>
+<script src="<?php echo base_url(); ?>/js/formatdate.js"></script>
 <script type="text/javascript">
-
     function CalendarView() {
         this.cdate = ko.observable();
         this.cdate(new Date("<?php echo $publish_date; ?>"));
         this.cdate.subscribe((tdate) => {
             window.location.assign("/hansards/" + formatDate(tdate));
         });
-        lightUp("<?php echo $publish_date;?>");
+        lightUp("<?php echo $publish_date; ?>");
         let dbh = null;
-        this.onChangeMonthYear = (year,month)=>{
-            if(dbh){
+        this.onChangeMonthYear = (year, month) => {
+            if (dbh) {
                 dbh.cancel();
             }
-            dbh = _.debounce(()=>{
-                let mth = ('0'+month).slice(-2);
+            dbh = _.debounce(() => {
+                let mth = ('0' + month).slice(-2);
                 lightUp(`${year}-${mth}-15`);
-            },800,false);
+            }, 800, false);
             dbh();
         }
     }
@@ -131,7 +142,8 @@
             }]
         },
         options: {
-            indexAxis: 'y'
+            indexAxis: 'y',
+            maintainAspectRatio: false
         }
     });
     WordCloud(document.getElementById('my_canvas'), {
