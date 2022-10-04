@@ -49,7 +49,7 @@
                             <h5>Keywords</h5>
                         </div>
                         <div class="card-body">
-                            <canvas id="my_canvas"  height="230" width="800"></canvas>
+                            <canvas id="my_canvas"  height="230" width="823"></canvas>
                         </div>
                     </div>
                 </div>
